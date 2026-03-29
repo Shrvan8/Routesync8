@@ -20,40 +20,44 @@ import {
   Zap,
   TrendingUp,
   ShieldCheck,
-  Briefcase
+  Briefcase,
+  MessageCircle
 } from 'lucide-react';
 
 /**
  * VS CODE USERS (Tailwind v3.4.19): 
- * 1. Move your bus images to 'src/assets'
- * 2. Uncomment the import lines below.
- * 3. Update the 'routes' array to use these imported variables.
+ * The imports below are for your local machine. 
+ * They are commented out here so the online preview doesn't crash.
+ * UNCOMMENT THEM IN YOUR VS CODE.
  */
- import busHero from './assets/image_416df4.jpg';
- import busRoute1 from './assets/image_417145.jpg';
- import busRoute2 from './assets/image_416e17.jpg';
- import busRoute3 from './assets/image_416e39.jpg';
- import busRoute4 from './assets/image_4170f9.jpg';
- import busInterior from './assets/image_41713d.jpg';
- import busCockpit from './assets/image_41711b.jpg';
- import busBack from './assets/image_417179.jpg';
+// import busHero from './assets/image_416df4.jpg';
+// import busRoute1 from './assets/image_417145.jpg';
+// import busRoute2 from './assets/image_416e17.jpg';
+// import busRoute3 from './assets/image_416e39.jpg';
+// import busRoute4 from './assets/image_4170f9.jpg';
+// import busInterior from './assets/image_41713d.jpg';
+// import busCockpit from './assets/image_41711b.jpg';
+// import busBack from './assets/image_417179.jpg';
 
-// Fallback / Placeholder constants for the preview environment
-//const busHero = "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&q=80&w=800";
-//const busRoute2 = "https://images.unsplash.com/photo-1570125909232-eb263c188f7e?auto=format&fit=crop&q=80&w=800";
-//const busRoute3 = "https://images.unsplash.com/photo-1562620644-66ba4db3f972?auto=format&fit=crop&q=80&w=800";
-//const busRoute4 = "https://images.unsplash.com/photo-1517649763962-0c623066013b?auto=format&fit=crop&q=80&w=800";
-//const busInterior = "https://images.unsplash.com/photo-1520038410233-7141be7e6f97?auto=format&fit=crop&q=80&w=800";
-//const busCockpit = "https://images.unsplash.com/photo-1511216335778-7cb8f49fa7a3?auto=format&fit=crop&q=80&w=800";
-//const busBack = "https://images.unsplash.com/photo-1550426176-02e0df2728f3?auto=format&fit=crop&q=80&w=800";
+// Placeholder constants for the online preview (Replace with imports in VS Code)
+const busHero = "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&q=80&w=800";
+const busRoute1 = "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&q=80&w=800";
+const busRoute2 = "https://images.unsplash.com/photo-1570125909232-eb263c188f7e?auto=format&fit=crop&q=80&w=800";
+const busRoute3 = "https://images.unsplash.com/photo-1562620644-66ba4db3f972?auto=format&fit=crop&q=80&w=800";
+const busRoute4 = "https://images.unsplash.com/photo-1517649763962-0c623066013b?auto=format&fit=crop&q=80&w=800";
+const busInterior = "https://images.unsplash.com/photo-1520038410233-7141be7e6f97?auto=format&fit=crop&q=80&w=800";
+const busCockpit = "https://images.unsplash.com/photo-1511216335778-7cb8f49fa7a3?auto=format&fit=crop&q=80&w=800";
+const busBack = "https://images.unsplash.com/photo-1550426176-02e0df2728f3?auto=format&fit=crop&q=80&w=800";
 
 const App = () => {
   const [view, setView] = useState('home'); 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [bookingModal, setBookingModal] = useState({ open: false, route: null });
+  const [formData, setFormData] = useState({ name: '', email: '' });
 
   const contactInfo = {
     phone: "+91 85509 71138",
+    whatsappNumber: "918550971138", // For WhatsApp URL (no + or spaces)
     email: "rishikeshdharade@gmail.com"
   };
 
@@ -105,8 +109,32 @@ const App = () => {
   ];
 
   const shareOnWhatsApp = (route) => {
-    const text = `Hey! Check out this office commute route on RouteSync: ${route.from} to ${route.to} for just ₹${route.price}/month. %0A%0AJoin me on the smart way to commute!`;
+    const text = encodeURIComponent(`Hey! Check out this office commute route on RouteSync: ${route.from} to ${route.to} for just ₹${route.price}/month.\n\nJoin me on the smart way to commute!`);
     window.open(`https://wa.me/?text=${text}`, '_blank');
+  };
+
+  const handleBookingSubmit = (e) => {
+    e.preventDefault();
+    if (!formData.name || !formData.email) {
+      alert("Please enter your name and email.");
+      return;
+    }
+    
+    // Generate WhatsApp message
+    const message = encodeURIComponent(
+      `*New Booking Interest from RouteSync Website*\n\n` +
+      `*Name:* ${formData.name}\n` +
+      `*Email:* ${formData.email}\n` +
+      `*Route:* ${bookingModal.route.from} ↔ ${bookingModal.route.to}\n` +
+      `*Monthly Price:* ₹${bookingModal.route.price}\n\n` +
+      `I am interested in this route. Please contact me with more details.`
+    );
+    
+    window.open(`https://wa.me/${contactInfo.whatsappNumber}?text=${message}`, '_blank');
+    
+    // Reset and close
+    setBookingModal({ open: false, route: null });
+    setFormData({ name: '', email: '' });
   };
 
   const Navigation = () => (
@@ -221,7 +249,10 @@ const App = () => {
                 >
                   View Routes <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </button>
-                <a href={`tel:${contactInfo.phone}`} className="px-10 py-5 bg-white text-slate-900 border border-slate-200 rounded-2xl font-bold text-lg hover:bg-slate-50 transition-all flex items-center justify-center gap-2 shadow-sm">
+                <a 
+                  href={`tel:${contactInfo.phone}`} 
+                  className="px-10 py-5 bg-white text-slate-900 border border-slate-200 rounded-2xl font-bold text-lg hover:bg-slate-50 transition-all flex items-center justify-center gap-2 shadow-sm"
+                >
                   Call Now <Phone className="w-5 h-5" />
                 </a>
               </div>
@@ -334,8 +365,22 @@ const App = () => {
   return (
     <div className="min-h-screen bg-white font-sans text-gray-900">
       <Navigation />
+      
       <main>{view === 'home' ? <HomeView /> : <AboutView />}</main>
+      
       <Footer />
+
+      {/* Floating WhatsApp Support Button */}
+      <a 
+        href={`https://wa.me/${contactInfo.whatsappNumber}`} 
+        target="_blank" 
+        rel="noopener noreferrer"
+        className="fixed bottom-6 right-6 z-50 bg-green-500 text-white p-4 rounded-full shadow-2xl hover:bg-green-600 hover:scale-110 transition-all flex items-center justify-center animate-bounce"
+        title="Chat with Support"
+      >
+        <MessageCircle size={32} />
+      </a>
+
       {bookingModal.open && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/80 backdrop-blur-md">
           <div className="bg-white w-full max-w-xl rounded-[2.5rem] overflow-hidden shadow-2xl animate-in zoom-in duration-300">
@@ -348,11 +393,38 @@ const App = () => {
                 <p className="font-bold text-lg text-slate-900">{bookingModal.route.from} ↔ {bookingModal.route.to}</p>
                 <p className="text-blue-600 font-black text-3xl mt-1">₹{bookingModal.route.price}<span className="text-sm text-slate-400">/month</span></p>
               </div>
-              <div className="space-y-4 mb-8">
-                <input type="text" placeholder="Your Full Name" className="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl font-bold focus:ring-2 focus:ring-blue-600/20 focus:outline-none" />
-                <input type="email" placeholder="Office Email Address" className="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl font-bold focus:ring-2 focus:ring-blue-600/20 focus:outline-none" />
-              </div>
-              <button className="w-full py-5 bg-blue-600 text-white rounded-2xl font-black text-lg hover:bg-blue-700 transition-all shadow-xl shadow-blue-200" onClick={() => { alert(`Thank you for your interest! Our team will contact you at ${contactInfo.phone} to confirm your seat.`); setBookingModal({ open: false, route: null }); }}>Confirm Interest</button>
+              
+              <form onSubmit={handleBookingSubmit} className="space-y-4">
+                <div className="space-y-4">
+                  <input 
+                    type="text" 
+                    placeholder="Your Full Name" 
+                    required
+                    value={formData.name}
+                    onChange={(e) => setFormData({...formData, name: e.target.value})}
+                    className="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl font-bold focus:ring-2 focus:ring-blue-600/20 focus:outline-none" 
+                  />
+                  <input 
+                    type="email" 
+                    placeholder="Office Email Address" 
+                    required
+                    value={formData.email}
+                    onChange={(e) => setFormData({...formData, email: e.target.value})}
+                    className="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl font-bold focus:ring-2 focus:ring-blue-600/20 focus:outline-none" 
+                  />
+                </div>
+                
+                <button 
+                  type="submit"
+                  className="w-full py-5 bg-blue-600 text-white rounded-2xl font-black text-lg hover:bg-blue-700 transition-all shadow-xl shadow-blue-200 flex items-center justify-center gap-2"
+                >
+                  <MessageCircle size={20} />
+                  Confirm Interest on WhatsApp
+                </button>
+                <p className="text-center text-xs font-bold text-slate-400 uppercase tracking-widest mt-4">
+                  Opens WhatsApp to share your details
+                </p>
+              </form>
             </div>
           </div>
         </div>
