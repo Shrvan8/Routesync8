@@ -30,24 +30,14 @@ import {
  * They are commented out here so the online preview doesn't crash.
  * UNCOMMENT THEM IN YOUR VS CODE.
  */
-// import busHero from './assets/image_416df4.jpg';
-// import busRoute1 from './assets/image_417145.jpg';
-// import busRoute2 from './assets/image_416e17.jpg';
-// import busRoute3 from './assets/image_416e39.jpg';
-// import busRoute4 from './assets/image_4170f9.jpg';
-// import busInterior from './assets/image_41713d.jpg';
-// import busCockpit from './assets/image_41711b.jpg';
-// import busBack from './assets/image_417179.jpg';
-
-// Placeholder constants for the online preview (Replace with imports in VS Code)
-const busHero = "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&q=80&w=800";
-const busRoute1 = "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&q=80&w=800";
-const busRoute2 = "https://images.unsplash.com/photo-1570125909232-eb263c188f7e?auto=format&fit=crop&q=80&w=800";
-const busRoute3 = "https://images.unsplash.com/photo-1562620644-66ba4db3f972?auto=format&fit=crop&q=80&w=800";
-const busRoute4 = "https://images.unsplash.com/photo-1517649763962-0c623066013b?auto=format&fit=crop&q=80&w=800";
-const busInterior = "https://images.unsplash.com/photo-1520038410233-7141be7e6f97?auto=format&fit=crop&q=80&w=800";
-const busCockpit = "https://images.unsplash.com/photo-1511216335778-7cb8f49fa7a3?auto=format&fit=crop&q=80&w=800";
-const busBack = "https://images.unsplash.com/photo-1550426176-02e0df2728f3?auto=format&fit=crop&q=80&w=800";
+ import busHero from './assets/image_416df4.jpg';
+ import busRoute1 from './assets/image_417145.jpg';
+ import busRoute2 from './assets/image_416e17.jpg';
+ import busRoute3 from './assets/image_416e39.jpg';
+ import busRoute4 from './assets/image_4170f9.jpg';
+ import busInterior from './assets/image_41713d.jpg';
+ import busCockpit from './assets/image_41711b.jpg';
+ import busBack from './assets/image_417179.jpg';
 
 const App = () => {
   const [view, setView] = useState('home'); 
